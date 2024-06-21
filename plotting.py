@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 
-# Function to plot graphs based on user's choice
+# Função para plotar gráficos com base na escolha do usuário
 def plot_graph(
     choice,
     mega_sena_data,
@@ -29,7 +29,7 @@ def plot_graph(
         )
         plt.title("Evolução dos valores acumulados ao longo do tempo")
         plt.xlabel("Data do Sorteio")
-        plt.ylabel("Valor Acumulado (R$)")
+        plt.ylabel("Valor Acumulado (Milhões de R$)")
         plt.show()
     elif choice == 3:
         plt.figure(figsize=(10, 6))
@@ -81,7 +81,7 @@ def plot_graph(
         )
         plt.title("Distribuição dos valores dos prêmios de 6 acertos ao longo do tempo")
         plt.xlabel("Data do Sorteio")
-        plt.ylabel("Valor do Prêmio (R$)")
+        plt.ylabel("Valor do Prêmio (Milhões de R$)")
         plt.show()
     elif choice == 9:
         plt.figure(figsize=(10, 6))
@@ -92,7 +92,7 @@ def plot_graph(
         )
         plt.title("Análise de tendência dos prêmios acumulados")
         plt.xlabel("Ano")
-        plt.ylabel("Média Acumulada (R$)")
+        plt.ylabel("Média Acumulada (Milhões de R$)")
         plt.show()
     else:
         print("Escolha inválida. Tente novamente.")

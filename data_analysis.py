@@ -1,27 +1,68 @@
 import pandas as pd
 
-# Função para limpar e converter valores monetários
+
+# Função para limpar e converter valores monetários para milhões
 def clean_currency(value):
     if isinstance(value, str):
-        return float(value.replace("R$", "").replace(".", "").replace(",", "."))
-    return value
+        return float(value.replace("R$", "").replace(".", "").replace(",", ".")) / 1e6
+    return value / 1e6
+
 
 # Dicionário para normalizar nomes de estados
 estado_map = {
-    "AC": "AC", "AL": "AL", "AP": "AP", "AM": "AM", "BA": "BA", "CE": "CE",
-    "DF": "DF", "ES": "ES", "GO": "GO", "MA": "MA", "MT": "MT", "MS": "MS",
-    "MG": "MG", "PA": "PA", "PB": "PB", "PR": "PR", "PE": "PE", "PI": "PI",
-    "RJ": "RJ", "RN": "RN", "RS": "RS", "RO": "RO", "RR": "RR", "SC": "SC",
-    "SP": "SP", "SE": "SE", "TO": "TO",
-    "SÃO PAULO": "SP", "SAO PAULO": "SP", "RIO DE JANEIRO": "RJ", 
-    "CURITIBA": "PR", "BRASÍLIA": "DF", "BRASILIA": "DF",
-    "PORTO ALEGRE": "RS", "SALVADOR": "BA", "FORTALEZA": "CE", 
-    "BELO HORIZONTE": "MG", "RECIFE": "PE", "GOIÂNIA": "GO", 
-    "GOIANIA": "GO", "MANAUS": "AM", "JOÃO PESSOA": "PB", 
-    "JOAO PESSOA": "PB", "CAMPO GRANDE": "MS", "FLORIANÓPOLIS": "SC", 
-    "FLORIANOPOLIS": "SC", "VITÓRIA": "ES", "NATAL": "RN", 
-    "TERESINA": "PI", "MACAPÁ": "AP", "PALMAS": "TO"
+    "AC": "AC",
+    "AL": "AL",
+    "AP": "AP",
+    "AM": "AM",
+    "BA": "BA",
+    "CE": "CE",
+    "DF": "DF",
+    "ES": "ES",
+    "GO": "GO",
+    "MA": "MA",
+    "MT": "MT",
+    "MS": "MS",
+    "MG": "MG",
+    "PA": "PA",
+    "PB": "PB",
+    "PR": "PR",
+    "PE": "PE",
+    "PI": "PI",
+    "RJ": "RJ",
+    "RN": "RN",
+    "RS": "RS",
+    "RO": "RO",
+    "RR": "RR",
+    "SC": "SC",
+    "SP": "SP",
+    "SE": "SE",
+    "TO": "TO",
+    "SÃO PAULO": "SP",
+    "SAO PAULO": "SP",
+    "RIO DE JANEIRO": "RJ",
+    "CURITIBA": "PR",
+    "BRASÍLIA": "DF",
+    "BRASILIA": "DF",
+    "PORTO ALEGRE": "RS",
+    "SALVADOR": "BA",
+    "FORTALEZA": "CE",
+    "BELO HORIZONTE": "MG",
+    "RECIFE": "PE",
+    "GOIÂNIA": "GO",
+    "GOIANIA": "GO",
+    "MANAUS": "AM",
+    "JOÃO PESSOA": "PB",
+    "JOAO PESSOA": "PB",
+    "CAMPO GRANDE": "MS",
+    "FLORIANÓPOLIS": "SC",
+    "FLORIANOPOLIS": "SC",
+    "VITÓRIA": "ES",
+    "NATAL": "RN",
+    "TERESINA": "PI",
+    "MACAPÁ": "AP",
+    "PALMAS": "TO",
 }
+
 
 # Função para normalizar as UFs
 def normalize_uf(location):
@@ -33,6 +74,7 @@ def normalize_uf(location):
             return estado_map.get(state, state)
         return estado_map.get(location, location)
     return location
+
 
 # Função para realizar a análise de dados
 def perform_analysis(file_path):
@@ -57,9 +99,9 @@ def perform_analysis(file_path):
     )
 
     # Análise 2: Evolução dos valores acumulados ao longo do tempo
-    mega_sena_data["Acumulado 6 acertos"] = mega_sena_data["Acumulado 6 acertos"].replace(
-        {"R\$0,00": "R$ 0,00"}
-    )
+    mega_sena_data["Acumulado 6 acertos"] = mega_sena_data[
+        "Acumulado 6 acertos"
+    ].replace({"R\$0,00": "R$ 0,00"})
     mega_sena_data["Acumulado 6 acertos"] = mega_sena_data["Acumulado 6 acertos"].apply(
         clean_currency
     )
@@ -72,10 +114,10 @@ def perform_analysis(file_path):
     mega_sena_data["UF"] = mega_sena_data["Cidade / UF"].apply(normalize_uf)
 
     # Análise 4: Distribuição dos prêmios por estado (apenas os principais)
-    estado_counts = (
-        mega_sena_data["UF"].dropna().value_counts()
-    )
-    estado_counts = estado_counts[estado_counts > 5]  # Filtrar estados com mais de 5 prêmios
+    estado_counts = mega_sena_data["UF"].dropna().value_counts()
+    estado_counts = estado_counts[
+        estado_counts > 5
+    ]  # Filtrar estados com mais de 5 prêmios
 
     # Análise 5: Quantidade de ganhadores por faixa de prêmio
     ganhadores_faixa = mega_sena_data[
@@ -104,4 +146,13 @@ def perform_analysis(file_path):
         .mean()
     )
 
-    return mega_sena_data, bola_counts, sem_ganhadores_frequencia, estado_counts, ganhadores_faixa, correlation_matrix, media_numeros, tendencia_acumulado
+    return (
+        mega_sena_data,
+        bola_counts,
+        sem_ganhadores_frequencia,
+        estado_counts,
+        ganhadores_faixa,
+        correlation_matrix,
+        media_numeros,
+        tendencia_acumulado,
+    )
