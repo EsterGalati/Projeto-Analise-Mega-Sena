@@ -1,4 +1,5 @@
 import pandas as pd
+from tkinter import Tk, Button, Label, messagebox
 from data_analysis import perform_analysis
 from plotting import plot_graph
 from export_pdf import export_pdf
@@ -9,6 +10,7 @@ file_path = "Mega-Sena.xlsx"  # Update the file path as necessary
 
 def main():
     # Perform data analysis and get necessary data
+    global mega_sena_data, bola_counts, sem_ganhadores_frequencia, estado_counts, ganhadores_faixa, correlation_matrix, media_numeros, tendencia_acumulado
     (
         mega_sena_data,
         bola_counts,
@@ -20,63 +22,77 @@ def main():
         tendencia_acumulado,
     ) = perform_analysis(file_path)
 
-    # Show the statistics
-    print(f"Números mais sorteados:\n{bola_counts.head()}\n")
-    print(f"Frequência de concursos sem ganhadores: {sem_ganhadores_frequencia:.2f}%")
-    print(f"Distribuição dos prêmios por estado:\n{estado_counts}\n")
-    print(f"Quantidade de ganhadores por faixa de prêmio:\n{ganhadores_faixa}\n")
-    print(f"Correlação entre os números sorteados:\n{correlation_matrix}\n")
-    print(f"Média de números sorteados por concurso:\n{media_numeros}\n")
-    print(
-        f"Tendência dos prêmios acumulados ao longo dos anos:\n{tendencia_acumulado}\n"
+    # Create the main window
+    root = Tk()
+    root.title("Análise da Mega Sena")
+
+    # Create a label
+    label = Label(
+        root,
+        text="Escolha o gráfico que deseja visualizar ou exportar para PDF:",
+        font=("Arial", 14),
     )
+    label.pack(pady=20)
 
-    # Menu for user to select which graph to display or export to PDF
-    while True:
-        print("\nEscolha o gráfico que deseja visualizar ou exportar para PDF:")
-        print("1 - Números mais sorteados")
-        print("2 - Evolução dos valores acumulados ao longo do tempo")
-        print("3 - Frequência de concursos sem ganhadores")
-        print("4 - Distribuição dos prêmios por estado (principais)")
-        print("5 - Quantidade de ganhadores por faixa de prêmio")
-        print("6 - Correlação entre os números sorteados")
-        print("7 - Média de números sorteados por concurso")
-        print("8 - Distribuição dos valores dos prêmios de 6 acertos ao longo do tempo")
-        print("9 - Análise de tendência dos prêmios acumulados")
-        print("10 - Exportar todos os gráficos para PDF")
-        print("0 - Sair")
+    # Create buttons for each option
+    buttons = [
+        ("Números mais sorteados", 1),
+        ("Evolução dos valores acumulados ao longo do tempo", 2),
+        ("Frequência de concursos sem ganhadores", 3),
+        ("Distribuição dos prêmios por estado (principais)", 4),
+        ("Quantidade de ganhadores por faixa de prêmio", 5),
+        ("Correlação entre os números sorteados", 6),
+        ("Média de números sorteados por concurso", 7),
+        ("Distribuição dos valores dos prêmios de 6 acertos ao longo do tempo", 8),
+        ("Análise de tendência dos prêmios acumulados", 9),
+        ("Exportar todos os gráficos para PDF", 10),
+    ]
 
-        choice = input("Digite o número da sua escolha: ")
+    for text, value in buttons:
+        button = Button(
+            root,
+            text=text,
+            command=lambda v=value: on_button_click(v),
+            font=("Arial", 12),
+            width=50,
+        )
+        button.pack(pady=5)
 
-        if choice.isdigit():
-            choice = int(choice)
-            if choice == 0:
-                break
-            elif choice == 10:
-                export_pdf(
-                    mega_sena_data,
-                    bola_counts,
-                    sem_ganhadores_frequencia,
-                    estado_counts,
-                    ganhadores_faixa,
-                    correlation_matrix,
-                    media_numeros,
-                    tendencia_acumulado,
-                )
-            else:
-                plot_graph(
-                    choice,
-                    mega_sena_data,
-                    bola_counts,
-                    sem_ganhadores_frequencia,
-                    estado_counts,
-                    ganhadores_faixa,
-                    correlation_matrix,
-                    media_numeros,
-                    tendencia_acumulado,
-                )
-        else:
-            print("Entrada inválida. Por favor, digite um número de 0 a 10.")
+    # Create an exit button
+    exit_button = Button(
+        root, text="Sair", command=root.quit, font=("Arial", 12), width=50
+    )
+    exit_button.pack(pady=20)
+
+    # Start the main loop
+    root.mainloop()
+
+
+def on_button_click(choice):
+    if choice == 10:
+        export_pdf(
+            mega_sena_data,
+            bola_counts,
+            sem_ganhadores_frequencia,
+            estado_counts,
+            ganhadores_faixa,
+            correlation_matrix,
+            media_numeros,
+            tendencia_acumulado,
+        )
+        messagebox.showinfo("Exportação", "Gráficos exportados para PDF com sucesso!")
+    else:
+        plot_graph(
+            choice,
+            mega_sena_data,
+            bola_counts,
+            sem_ganhadores_frequencia,
+            estado_counts,
+            ganhadores_faixa,
+            correlation_matrix,
+            media_numeros,
+            tendencia_acumulado,
+        )
 
 
 if __name__ == "__main__":
