@@ -2,6 +2,10 @@
 
 Este projeto realiza a análise dos resultados da Mega-Sena, utilizando Python para carregar, processar e visualizar os dados.
 
+## Apresentação no YouTube
+
+https://youtu.be/j23pD35JGks
+
 ## Estrutura do Projeto
 
 - **Main**: Ponto de entrada do projeto.
