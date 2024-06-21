@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 
 
-# Função para plotar gráficos com base na escolha do usuário
 def plot_graph(
     choice,
     mega_sena_data,

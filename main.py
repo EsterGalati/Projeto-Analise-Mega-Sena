@@ -4,12 +4,10 @@ from data_analysis import perform_analysis
 from plotting import plot_graph
 from export_pdf import export_pdf
 
-# Load the Excel file
-file_path = "Mega-Sena.xlsx"  # Update the file path as necessary
+file_path = "Mega-Sena.xlsx"  
 
 
 def main():
-    # Perform data analysis and get necessary data
     global mega_sena_data, bola_counts, sem_ganhadores_frequencia, estado_counts, ganhadores_faixa, correlation_matrix, media_numeros, tendencia_acumulado
     (
         mega_sena_data,
@@ -22,11 +20,9 @@ def main():
         tendencia_acumulado,
     ) = perform_analysis(file_path)
 
-    # Create the main window
     root = Tk()
     root.title("Análise da Mega Sena")
 
-    # Create a label
     label = Label(
         root,
         text="Escolha o gráfico que deseja visualizar ou exportar para PDF:",
@@ -34,7 +30,6 @@ def main():
     )
     label.pack(pady=20)
 
-    # Create buttons for each option
     buttons = [
         ("Números mais sorteados", 1),
         ("Evolução dos valores acumulados ao longo do tempo", 2),
@@ -58,13 +53,11 @@ def main():
         )
         button.pack(pady=5)
 
-    # Create an exit button
     exit_button = Button(
         root, text="Sair", command=root.quit, font=("Arial", 12), width=50
     )
     exit_button.pack(pady=20)
 
-    # Start the main loop
     root.mainloop()
 
 
